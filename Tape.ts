@@ -11,7 +11,14 @@ class Tape {
   private readonly blankSymbol: string;
   readonly tapeContent: { [key: number]: string } = {};
 
-  constructor(blankSymbol: string) {
+  constructor(intialTapeContents: string, blankSymbol: string) {
+    if (intialTapeContents.length > 0)
+      this.maxIndex = intialTapeContents.length - 1;
+
+    for (let i = 0; i < intialTapeContents.length; ++i) {
+      this.tapeContent[i] = intialTapeContents[i];
+    }
+
     this.blankSymbol = blankSymbol;
   }
 
