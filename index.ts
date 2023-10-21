@@ -1,22 +1,31 @@
 import { Tape, Direction } from './Tape';
-import * as readline from 'readline/promises';
+import readline from 'readline';
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
+function question(query: string): Promise<string> {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  return new Promise<string>((resolve) =>
+    rl.question(query, (ans) => {
+      rl.close();
+      resolve(ans);
+    })
+  );
+}
 
 async function main() {
   try {
-    const blankSymbol = await rl.question('Blank Symbol: ');
-    const intialTapeContents = await rl.question('Initial Tape Content: ');
+    const blankSymbol = await question('Blank Symbol: ');
+    const intialTapeContents = await question('Initial Tape Content: ');
 
     const tape = new Tape(intialTapeContents, blankSymbol);
 
     while (true) {
       tape.print();
 
-      const command = await rl.question('');
+      const command = await question('');
       if (command == '') break;
       const replacer = command[0];
       const directionString = command[1];
@@ -26,8 +35,6 @@ async function main() {
         directionString == '<' ? Direction.LEFT : Direction.RIGHT
       );
     }
-
-    rl.close();
   } catch (e) {
     console.error(e);
   }
