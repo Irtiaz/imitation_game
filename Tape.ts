@@ -9,7 +9,7 @@ class Tape {
   private tapeHead: number = 0;
 
   private readonly blankSymbol: string;
-  readonly tapeContent: { [key: number]: string } = {};
+  readonly tapeContent: {[key: number]: string} = {};
 
   constructor(intialTapeContents: string, blankSymbol: string) {
     if (intialTapeContents.length > 0)
@@ -23,13 +23,11 @@ class Tape {
   }
 
   read() {
-    return this.tapeContent[this.tapeHead] == undefined
-      ? this.blankSymbol
-      : this.tapeContent[this.tapeHead];
+    return this.tapeContent[this.tapeHead] ?? this.blankSymbol;
   }
 
   write(ch: string, direction: Direction) {
-    if (ch.length != 1) throw 'Can only write a character in tape';
+    if (ch.length != 1) throw new Error('Can only write a character in tape');
     this.tapeContent[this.tapeHead] = ch;
 
     if (this.tapeHead == this.minIndex && ch == this.blankSymbol)
@@ -55,10 +53,7 @@ class Tape {
     }
 
     for (let i = this.minIndex; i <= this.maxIndex; ++i) {
-      str +=
-        this.tapeContent[i] == undefined
-          ? this.blankSymbol
-          : this.tapeContent[i];
+      str += this.tapeContent[i] ?? this.blankSymbol;
 
       cursrorLine += i == this.tapeHead ? '^' : ' ';
     }
@@ -73,4 +68,4 @@ class Tape {
   }
 }
 
-export { Tape, Direction };
+export {Tape, Direction};
